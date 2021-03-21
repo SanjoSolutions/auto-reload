@@ -1,30 +1,47 @@
 import chokidar from 'chokidar'
+import {server as WebSocketServer} from 'websocket'
+import http from 'http'
+
+let connections = new Set()
+
+function sendLastChangedDate(lastChanged) {
+  const lastChangedText = lastChanged.toISOString()
+  for (const connection of connections) {
+    connection.sendUTF(lastChangedText)
+  }
+}
 
 const watchPath = process.cwd()
-let lastChanged = null
 
 chokidar.watch(watchPath).on(
   'all',
   function onChange(event, path) {
-    lastChanged = new Date()
+    const lastChanged = new Date()
+    sendLastChangedDate(lastChanged)
   },
 )
 
-import express from 'express'
-import cors from 'cors'
-
-const app = express()
-
-app.use(cors())
-
-app.get('/', function (request, response) {
-  response.send(lastChanged.toISOString())
+const server = http.createServer(function (request, response) {
+  response.writeHead(404)
+  response.end()
 })
-
 let port = parseInt(process.argv[2], 10)
 if (Number.isNaN(port)) {
   port = 8080
 }
-app.listen(port, function () {
+server.listen(port, function () {
   console.log(`Server listening on port ${port}...`)
+})
+
+const webSocketServer = new WebSocketServer({
+  httpServer: server,
+  autoAcceptConnections: true
+})
+
+webSocketServer.on('connect', function (connection) {
+  connections.add(connection)
+})
+
+webSocketServer.on('close', function (connection) {
+  connections.delete(connection)
 })

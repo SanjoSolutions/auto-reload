@@ -9,8 +9,7 @@
   },
   "dependencies": {
     "chokidar": "^3.5.1",
-    "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "websocket": "^1.0.33"
   },
   "repository": "SanjoSolutions/auto-reload",
   "keywords": [

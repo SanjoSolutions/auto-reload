@@ -21,28 +21,23 @@ function setLastReloadDate(lastReloadDate) {
   localStorage.setItem(lastReloadDateKey, value)
 }
 
-async function check() {
-  try {
-    const port = window.AUTO_RELOAD_PORT || 8080
-    const response = await fetch(`http://localhost:${port}`)
-    const lastChangedText = await response.text()
-    const lastChanged = new Date(lastChangedText)
-    const lastReloadDate = getLastReloadDate()
-    if (lastChanged > lastReloadDate) {
-      setLastReloadDate(lastChanged)
-      location.reload()
-    }
-  } catch (error) {
-    // Empty
-  }
-  scheduleNextCheck()
-}
-
-function scheduleNextCheck() {
-  setTimeout(check, 200)
-}
-
 if (!getLastReloadDate()) {
   setLastReloadDate(new Date())
 }
-scheduleNextCheck()
+
+const port = window.AUTO_RELOAD_PORT || 8080
+const webSocket = new WebSocket(
+  `ws://localhost:${port}`
+)
+webSocket.onerror = function (event) {
+  console.error('WebSocket error:', event)
+}
+webSocket.onmessage = function (event) {
+  const lastChangedText = event.data
+  const lastChanged = new Date(lastChangedText)
+  const lastReloadDate = getLastReloadDate()
+  if (lastChanged > lastReloadDate) {
+    setLastReloadDate(lastChanged)
+    location.reload()
+  }
+}
