@@ -6,7 +6,6 @@ let lastChanged = null
 chokidar.watch(watchPath).on(
   'all',
   (event, path) => {
-  console.log(event, path)
   lastChanged = new Date()
 })
 
