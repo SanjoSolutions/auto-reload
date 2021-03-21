@@ -1,7 +1,7 @@
 {
   "license": "SEE LICENSE IN LICENSE",
   "name": "@sanjo/auto-reload",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Reloads the page when a file in the current working directory has changed.",
   "type": "module",
   "bin": {
