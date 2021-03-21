@@ -5,9 +5,10 @@ let lastChanged = null
 
 chokidar.watch(watchPath).on(
   'all',
-  (event, path) => {
-  lastChanged = new Date()
-})
+  function onChange(event, path) {
+    lastChanged = new Date()
+  },
+)
 
 import express from 'express'
 import cors from 'cors'
