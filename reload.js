@@ -22,14 +22,18 @@ function setLastReloadDate(lastReloadDate) {
 }
 
 async function check() {
-  const port = window.AUTO_RELOAD_PORT || 8080
-  const response = await fetch(`http://localhost:${port}`)
-  const lastChangedText = await response.text()
-  const lastChanged = new Date(lastChangedText)
-  const lastReloadDate = getLastReloadDate()
-  if (lastChanged > lastReloadDate) {
-    setLastReloadDate(lastChanged)
-    location.reload()
+  try {
+    const port = window.AUTO_RELOAD_PORT || 8080
+    const response = await fetch(`http://localhost:${port}`)
+    const lastChangedText = await response.text()
+    const lastChanged = new Date(lastChangedText)
+    const lastReloadDate = getLastReloadDate()
+    if (lastChanged > lastReloadDate) {
+      setLastReloadDate(lastChanged)
+      location.reload()
+    }
+  } catch (error) {
+    // Empty
   }
   scheduleNextCheck()
 }
