@@ -30,3 +30,20 @@ Put this script before the closing body tag.
 ```html
 <script src="node_modules/@sanjo/auto-reload/reload.js"></script>
 ```
+
+For other ports than 8080, you need to specify the port via:
+
+```html
+<script>
+  window.AUTO_RELOAD_PORT = 8081
+</script>
+```
+
+before the reload.js script inclusion. E.g.
+
+```html
+<script>
+  window.AUTO_RELOAD_PORT = 8081
+</script>
+<script src="node_modules/@sanjo/auto-reload/reload.js"></script>
+```

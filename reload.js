@@ -22,7 +22,8 @@ function setLastReloadDate(lastReloadDate) {
 }
 
 async function check() {
-  const response = await fetch('http://localhost:8080')
+  const port = window.AUTO_RELOAD_PORT || 8080
+  const response = await fetch(`http://localhost:${port}`)
   const lastChangedText = await response.text()
   const lastChanged = new Date(lastChangedText)
   const lastReloadDate = getLastReloadDate()
