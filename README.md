@@ -17,7 +17,7 @@ npm install --save-dev @sanjo/auto-reload
 The file watch server will watch all files in the current working directory.
 
 ```sh
-node node_modules/.bin/auto-reload
+npx auto-reload
 ```
 
 You can optionally pass a port as first argument.
