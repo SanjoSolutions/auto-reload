@@ -27,11 +27,7 @@ if (Number.isNaN(port)) {
   port = 8080
 }
 server.listen(port, function () {
-  let serverURL = 'http://localhost'
-  if (port !== 80) {
-    serverURL += `:${port}`
-  }
-  console.log(`Server available at ${serverURL}.`)
+  console.log(`Notification server is running.`)
 })
 
 const webSocketServer = new WebSocketServer({
