@@ -1,5 +1,5 @@
 import chokidar from 'chokidar'
-import {server as WebSocketServer} from 'websocket'
+import { server as WebSocketServer } from 'websocket'
 import http from 'http'
 
 let connections = new Set()
@@ -13,13 +13,10 @@ function sendLastChangedDate(lastChanged) {
 
 const watchPath = process.cwd()
 
-chokidar.watch(watchPath).on(
-  'all',
-  function onChange(event, path) {
-    const lastChanged = new Date()
-    sendLastChangedDate(lastChanged)
-  },
-)
+chokidar.watch(watchPath).on('all', function onChange(event, path) {
+  const lastChanged = new Date()
+  sendLastChangedDate(lastChanged)
+})
 
 const server = http.createServer(function (request, response) {
   response.writeHead(404)
@@ -30,12 +27,16 @@ if (Number.isNaN(port)) {
   port = 8080
 }
 server.listen(port, function () {
-  console.log(`Server listening on port ${port}...`)
+  let serverURL = 'http://localhost'
+  if (port !== 80) {
+    serverURL += `:${port}`
+  }
+  console.log(`Server available at ${serverURL}.`)
 })
 
 const webSocketServer = new WebSocketServer({
   httpServer: server,
-  autoAcceptConnections: true
+  autoAcceptConnections: true,
 })
 
 webSocketServer.on('connect', function (connection) {
